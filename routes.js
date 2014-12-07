@@ -8,6 +8,8 @@ var gravatar = require('gravatar');
 
 var http = require('http');
 
+var querystring = require('querystring');
+
 // Export a function, so that we can pass 
 // the app and io instances from the app.js file:
 
@@ -146,7 +148,7 @@ module.exports = function(app,io){
 				receiver = room[0];
 			}
 
-			url = "http://api.mymemory.translated.net/get?q=" + data.msg + "!&langpair=" + sender.lang + "|" + receiver.lang;
+			url = "http://api.mymemory.translated.net/get?" + querystring.stringify({q: data.msg}) + "&langpair=" + sender.lang + "|" + receiver.lang;
 
 			var message;
 
