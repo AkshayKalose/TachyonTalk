@@ -148,16 +148,16 @@ module.exports = function(app,io){
 				receiver = room[0];
 			}
 
-			getAndSendTranslatedMessage(data.msg, sender.lang, receiver.lang, socket, data);
+			getAndSendTranslatedMessage(true, data.msg, sender.lang, receiver.lang, socket, data);
 
 		});
 	});
 };
 
-function getAndSendTranslatedMessage(message, flang, tlang, socket, data) {
-	url = "http://api.mymemory.translated.net/get?" + querystring.stringify({q: message}) + "&langpair=" + flang + "|" + tlang;
+function getAndSendTranslatedMessage(send, messageO, flang, tlang, socket, data, alt_tlang) {
+	url = "http://api.mymemory.translated.net/get?" + querystring.stringify({q: messageO}) + "&langpair=" + flang + "|" + tlang + "&mt=1";
 
-	var message;
+	var messageT;
 
 	var request = http.get(url, function (response) {
 	    // data is streamed in chunks from the server
@@ -177,10 +177,33 @@ function getAndSendTranslatedMessage(message, flang, tlang, socket, data) {
 	        console.log("\n");
 	        json = JSON.parse(buffer);
 	        console.log(json);
-	        message = json.responseData.translatedText;
-	        sendTranslatedText(message, socket, data);
+	        messageT = json.responseData.translatedText;
+	        if (messageT == null && send) {
+	        	alternateTranslate(true, messageO, flang, tlang, socket, data);
+	        }
+	        if (messageT != null && !send) {
+	        	alternateTranslate(false, messageT, flang, alt_tlang, socket, data);
+	        }
+	        if (send) sendTranslatedText(messageT, socket, data);
+
+	        //null while taking alternate pathway
+	        //WORST CASE SCENARIO - Could not be translated.
+	        //Sometimes, must re-request couple times to get proper translation.
+	        if (messageT == null && !send) {
+	        	sendTranslatedText('Could not be translated.', socket, data);
+	        }
 	    }); 
 	}); 
+}
+
+// provides alternate translation pathway. flang -> English(en) -> tlang
+function alternateTranslate(first, message, flang, tlang, socket, data) {
+	console.log('Taking Alternate Translation Pathway');
+	if (first) {
+		getAndSendTranslatedMessage(false, message, flang, 'en', socket, data, tlang);
+	} else {
+		getAndSendTranslatedMessage(true, message, 'en', tlang, socket, data);
+	}
 }
 
 function sendTranslatedText(message, socket, data) {
