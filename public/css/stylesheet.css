@@ -59,7 +59,7 @@ body {
 .banner {
 	height: 70px;
 	background-color: #3c4446;
-	margin-bottom: 200px;
+	margin-bottom: 100px;
 }
 
 .bannertext {
@@ -116,7 +116,7 @@ body {
 	border-radius: 3px;
 	box-shadow: 0px 5px 5px #e4e8e7;
 	text-decoration: none;
-	margin-bottom: 70px;
+	margin-bottom: 40px;
 	color: #eeffff;
 }
 #create:visited {
@@ -143,6 +143,12 @@ body {
 	color: #FF8D00;
 }
 
+#footnote {
+	font-size: small;
+}
+#footnote span {
+	color: #FF8D00;
+}
 
 
 /* ------ Connected ------*/
@@ -354,6 +360,7 @@ body {
 	margin-bottom:120px;
 	border-radius: 4px;
 	background-color: #f0f1f3;
+	cursor: text;
 }
 .invite-textfield #link{
 	text-decoration: none;
