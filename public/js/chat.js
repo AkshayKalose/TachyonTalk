@@ -12,6 +12,7 @@ $(function(){
 	var name = "",
 		email = "",
 		img = "",
+		lang = "",
 		friend = "";
 
 	// cache some jQuery objects
@@ -31,8 +32,10 @@ $(function(){
 		loginForm = $(".loginForm"),
 		yourName = $("#yourName"),
 		yourEmail = $("#yourEmail"),
+		yourLanguage = $("#yourLanguage"),
 		hisName = $("#hisName"),
 		hisEmail = $("#hisEmail"),
+		hisLanguage = $("#hisLanguage"),
 		chatForm = $("#chatform"),
 		textarea = $("#message"),
 		messageTimeSent = $(".timesent"),
@@ -75,16 +78,18 @@ $(function(){
 
 				email = yourEmail.val();
 
-				if(!isValid(email)) {
+				lang = yourLanguage.val();
+
+				/*if(!isValid(email)) {
 					alert("Please enter a valid email!");
 				}
-				else {
+				else {*/
 
 					showMessage("inviteSomebody");
 
 					// call the server-side function 'login' and send user's parameters
-					socket.emit('login', {user: name, avatar: email, id: id});
-				}
+					socket.emit('login', {user: name, avatar: email, id: id, lang: lang});
+				//}
 			
 			});
 		}
@@ -110,12 +115,14 @@ $(function(){
 				}
 				email = hisEmail.val();
 
-				if(!isValid(email)){
+				lang = hisLanguage.val();
+
+				/*if(!isValid(email)){
 					alert("Wrong e-mail format!");
 				}
-				else {
-					socket.emit('login', {user: name, avatar: email, id: id});
-				}
+				else {*/
+					socket.emit('login', {user: name, avatar: email, id: id, lang: lang});
+				//}
 
 			});
 		}

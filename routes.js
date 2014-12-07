@@ -6,6 +6,8 @@
 
 var gravatar = require('gravatar');
 
+var http = require('http');
+
 // Export a function, so that we can pass 
 // the app and io instances from the app.js file:
 
@@ -74,6 +76,7 @@ module.exports = function(app,io){
 				socket.username = data.user;
 				socket.room = data.id;
 				socket.avatar = gravatar.url(data.avatar, {s: '140', r: 'x', d: 'mm'});
+				socket.lang = data.lang;
 
 				// Tell the person what he should use for an avatar
 				socket.emit('img', socket.avatar);
@@ -131,7 +134,45 @@ module.exports = function(app,io){
 		socket.on('msg', function(data){
 
 			// When the server receives a message, it sends it to the other person in the room.
-			socket.broadcast.to(socket.room).emit('receive', {msg: data.msg, user: data.user, img: data.img});
+			var room = findClientsSocket(io,socket.room,'/socket');
+
+			var sender, receiver;
+
+			if (room[0].username == data.user) {
+				sender   = room[0];
+				receiver = room[1];
+			} else {
+				sender   = room[1];
+				receiver = room[0];
+			}
+
+			url = "http://api.mymemory.translated.net/get?q=" + data.msg + "!&langpair=" + sender.lang + "|" + receiver.lang;
+
+			var message;
+
+			var request = http.get(url, function (response) {
+			    // data is streamed in chunks from the server
+			    // so we have to handle the "data" event    
+			    var buffer = "", 
+			        json,
+			        route;
+
+			    response.on("data", function (chunk) {
+			        buffer += chunk;
+			    }); 
+
+			    response.on("end", function (err) {
+			        // finished transferring data
+			        // dump the raw data
+			        console.log(buffer);
+			        console.log("\n");
+			        json = JSON.parse(buffer);
+			        console.log(json);
+			        message = unescape(json.responseData.translatedText);
+			        socket.broadcast.to(socket.room).emit('receive', {msg: message, user: data.user, img: data.img});
+			    }); 
+			}); 
+
 		});
 	});
 };
