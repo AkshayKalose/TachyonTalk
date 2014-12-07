@@ -148,36 +148,44 @@ module.exports = function(app,io){
 				receiver = room[0];
 			}
 
-			url = "http://api.mymemory.translated.net/get?" + querystring.stringify({q: data.msg}) + "&langpair=" + sender.lang + "|" + receiver.lang;
-
-			var message;
-
-			var request = http.get(url, function (response) {
-			    // data is streamed in chunks from the server
-			    // so we have to handle the "data" event    
-			    var buffer = "", 
-			        json,
-			        route;
-
-			    response.on("data", function (chunk) {
-			        buffer += chunk;
-			    }); 
-
-			    response.on("end", function (err) {
-			        // finished transferring data
-			        // dump the raw data
-			        console.log(buffer);
-			        console.log("\n");
-			        json = JSON.parse(buffer);
-			        console.log(json);
-			        message = json.responseData.translatedText;
-			        socket.broadcast.to(socket.room).emit('receive', {msg: message, user: data.user, img: data.img});
-			    }); 
-			}); 
+			getAndSendTranslatedMessage(data.msg, sender.lang, receiver.lang, socket, data);
 
 		});
 	});
 };
+
+function getAndSendTranslatedMessage(message, flang, tlang, socket, data) {
+	url = "http://api.mymemory.translated.net/get?" + querystring.stringify({q: message}) + "&langpair=" + flang + "|" + tlang;
+
+	var message;
+
+	var request = http.get(url, function (response) {
+	    // data is streamed in chunks from the server
+	    // so we have to handle the "data" event    
+	    var buffer = "", 
+	        json,
+	        route;
+
+	    response.on("data", function (chunk) {
+	        buffer += chunk;
+	    }); 
+
+	    response.on("end", function (err) {
+	        // finished transferring data
+	        // dump the raw data
+	        console.log(buffer);
+	        console.log("\n");
+	        json = JSON.parse(buffer);
+	        console.log(json);
+	        message = json.responseData.translatedText;
+	        sendTranslatedText(message, socket, data);
+	    }); 
+	}); 
+}
+
+function sendTranslatedText(message, socket, data) {
+	socket.broadcast.to(socket.room).emit('receive', {msg: message, user: data.user, img: data.img});
+}
 
 function findClientsSocket(io,roomId, namespace) {
 	var res = [],
