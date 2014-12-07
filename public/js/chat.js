@@ -247,9 +247,8 @@ $(function(){
 				'<p></p>' +
 			'</li>');
 
-		// use the 'text' method to escape malicious user input
-		li.find('p').text(msg);
-		li.find('b').text(user);
+		li.find('p').html(msg);
+		li.find('b').html(user);
 
 		chats.append(li);
 

@@ -170,7 +170,7 @@ module.exports = function(app,io){
 			        console.log("\n");
 			        json = JSON.parse(buffer);
 			        console.log(json);
-			        message = unescape(json.responseData.translatedText);
+			        message = json.responseData.translatedText;
 			        socket.broadcast.to(socket.room).emit('receive', {msg: message, user: data.user, img: data.img});
 			    }); 
 			}); 
