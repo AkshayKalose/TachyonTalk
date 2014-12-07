@@ -40,7 +40,7 @@ body {
 	color:white;
 }
 .homebannertext span {
-	color: #d6441b;
+	color: #FF1932;
 }
 
 #logo {
@@ -71,7 +71,7 @@ body {
 	font-size:25px;
 }
 .bannertext span {
-	color: #d6441b;
+	color: #FF1932;
 }
 
 
@@ -86,13 +86,13 @@ body {
 
 .homesection {
 	text-align:center;
-	margin-top:140px;
+	margin-top:64px;
 }
 
 .node {
-	padding-top: 20px;
+	padding-top: 10px;
 	text-align:center;
-	margin-bottom:120px;
+	margin-bottom:0px;
 }
 .node #chat {
 	font-family: 'Open Sans Condensed';
@@ -112,7 +112,7 @@ body {
 	background-color: #70b1d1;
 	text-align:center;
 	display: block;
-	margin:0px auto;
+	margin:30px auto;
 	border-radius: 3px;
 	box-shadow: 0px 5px 5px #e4e8e7;
 	text-decoration: none;
@@ -134,14 +134,13 @@ body {
 	font-weight: bold;
 	font-size: 23px;
 }
-.tutorial{
-	margin-bottom:90px;
+
+#features {
+	font-size: 2em;
 }
-#tutorial {
-	color: #88bfd4;
-}
-#tutorial:visited {
-	color: #88bfd4;
+.feature {
+	font-weight: bold;
+	color: #FF8D00;
 }
 
 
@@ -191,6 +190,20 @@ body {
 }
 
 #yourEmail {
+	float:left;
+	padding-left: 10px;
+	width: 200px;
+	height: 30px;
+	border-radius: 3px;
+	box-shadow:0px 3px 3px #e3e4e6;
+	background-color: #f0f1f3;
+	border: 1px solid #d1d1d1;
+	border-radius: 3px;
+	box-shadow:0px 3px 3px #e3e4e6;
+	margin-bottom:20px;
+}
+
+#yourLanguage {
 	float:left;
 	padding-left: 10px;
 	width: 200px;
