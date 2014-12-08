@@ -1,7 +1,7 @@
 {
-  "name": "NodeChatSystem",
-  "version": "0.0.1",
-  "description": "Realtime chat system for Tutorialzine.com",
+  "name": "TachyonTalk",
+  "version": "1.0.0",
+  "description": "International Translating Private Chat Room",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -9,9 +9,11 @@
   "keywords": [
     "node",
     "chat",
-    "system"
+    "system",
+    "translation"
   ],
-  "author": "Nikolay Anastasov",
+  "author": "Akshay Kalose",
+  "contributor": "Nikolay Anastasov",
   "license": "MIT",
   "dependencies": {
     "ejs": "^1.0.0",
