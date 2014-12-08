@@ -148,13 +148,13 @@ module.exports = function(app,io){
 				receiver = room[0];
 			}
 
-			getAndSendTranslatedMessage(true, data.msg, sender.lang, receiver.lang, socket, data);
+			getAndSendTranslatedMessage(true, data.msg, sender.lang, receiver.lang, socket, data, undefined, 0);
 
 		});
 	});
 };
 
-function getAndSendTranslatedMessage(send, messageO, flang, tlang, socket, data, alt_tlang) {
+function getAndSendTranslatedMessage(send, messageO, flang, tlang, socket, data, other_lang, retries) {
 	url = "http://api.mymemory.translated.net/get?" + querystring.stringify({q: messageO}) + "&langpair=" + flang + "|" + tlang + "&mt=1";
 
 	var messageT;
@@ -173,36 +173,51 @@ function getAndSendTranslatedMessage(send, messageO, flang, tlang, socket, data,
 	    response.on("end", function (err) {
 	        // finished transferring data
 	        // dump the raw data
-	        console.log(buffer);
-	        console.log("\n");
+	        //console.log(buffer);
+	        //console.log("\n");
 	        json = JSON.parse(buffer);
-	        console.log(json);
+	        //console.log(json);
 	        messageT = json.responseData.translatedText;
+
+	        // use machine translation
+	        for (var mat in json.matches) {
+	        	if ((json.matches[mat].reference).indexOf('Machine Translation') > -1) {
+	        		messageT = json.matches[mat].translation;
+	        		break;
+	        	}
+	        }
+
 	        if (messageT == null && send) {
-	        	alternateTranslate(true, messageO, flang, tlang, socket, data);
+	        	alternateTranslate(true, messageO, flang, tlang, socket, data, retries);
 	        }
 	        if (messageT != null && !send) {
-	        	alternateTranslate(false, messageT, flang, alt_tlang, socket, data);
+	        	alternateTranslate(false, messageT, flang, other_lang, socket, data, retries);
 	        }
 	        if (send) sendTranslatedText(messageT, socket, data);
 
-	        //null while taking alternate pathway
-	        //WORST CASE SCENARIO - Could not be translated.
-	        //Sometimes, must re-request couple times to get proper translation.
+	        // null while taking alternate pathway
+	        // WORST CASE SCENARIO - Could not be translated.
+	        // Sometimes, must re-request couple times to get proper translation.
+	        // if alternate pathway(getting to english) fails
 	        if (messageT == null && !send) {
-	        	sendTranslatedText('Could not be translated.', socket, data);
+	        	// maximum of 3 retries to translate.
+	        	if (retries < 3) {
+	        		getAndSendTranslatedMessage(true, messageO, flang, other_lang, socket, data, undefined, retries + 1);
+	        	} else {
+	        		sendTranslatedText('Could not be translated.', socket, data);
+	        	}
 	        }
 	    }); 
 	}); 
 }
 
 // provides alternate translation pathway. flang -> English(en) -> tlang
-function alternateTranslate(first, message, flang, tlang, socket, data) {
+function alternateTranslate(first, message, flang, tlang, socket, data, retries) {
 	console.log('Taking Alternate Translation Pathway');
 	if (first) {
-		getAndSendTranslatedMessage(false, message, flang, 'en', socket, data, tlang);
+		getAndSendTranslatedMessage(false, message, flang, 'en', socket, data, tlang, retries);
 	} else {
-		getAndSendTranslatedMessage(true, message, 'en', tlang, socket, data);
+		getAndSendTranslatedMessage(true, message, 'en', tlang, socket, data, flang, retries);
 	}
 }
 
