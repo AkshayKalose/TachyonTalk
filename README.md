@@ -20,16 +20,20 @@ Although time did not permit, there were plans to implement Speech Recognition a
 
 Here provide couple screenshots of your project. You can use a tool like https://monosnap.com/welcome or https://droplr.com to take a screenshot. Animated gifs are also welcome.
 
-![Koding](https://koding.com/a/site.landing/images/slideshow/2x/ss-terminal.png "Koding")
-![Koding](https://koding.com/a/site.landing/images/slideshow/2x/ss-ide.png "Koding")
+![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/home.png "TachyonTalk")
+![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/start1.png "TachyonTalk")
+![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/start2.png "TachyonTalk")
+![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/chat1.png "TachyonTalk")
+![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/chat2.png "TachyonTalk")
 
 ## APIs used
-[MyMemory Translated](http://mymemory.translated.net/doc/spec.php)
-[Gravatar](https://en.gravatar.com/site/implement/)
+ - [MyMemory Translated](http://mymemory.translated.net/doc/spec.php)
+ - [Gravatar](https://en.gravatar.com/site/implement/)
 
 ## Resources
-http://tutorialzine.com/2014/03/nodejs-private-webchat/
-
+ - http://tutorialzine.com/2014/03/nodejs-private-webchat/
+ - [MomentJS](http://momentjs.com/)
+ 
 ## Node.js Libraries Used
  - ejs
  - express
