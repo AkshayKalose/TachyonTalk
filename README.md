@@ -18,8 +18,6 @@ Although time did not permit, there were plans to implement Speech Recognition a
 
 ## Screenshots
 
-Here provide couple screenshots of your project. You can use a tool like https://monosnap.com/welcome or https://droplr.com to take a screenshot. Animated gifs are also welcome.
-
 ![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/home.png "TachyonTalk")
 ![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/start1.png "TachyonTalk")
 ![TachyonTalk](https://raw.githubusercontent.com/AkshayKalose/TachyonTalk/master/images/start2.png "TachyonTalk")
